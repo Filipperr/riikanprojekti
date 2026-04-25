@@ -23,7 +23,7 @@
                 radial-gradient(circle at 85% 8%, rgba(17, 17, 17, 0.05), transparent 28rem),
                 linear-gradient(135deg, #fbf8f1 0%, var(--bg) 52%, #eee6da 100%);
             color: var(--ink);
-            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
         }
@@ -36,6 +36,7 @@
             padding: 28px;
         }
 
+        /* Yläpalkki */
         .site-header {
             display: flex;
             align-items: center;
@@ -67,6 +68,7 @@
 
         .nav { display: flex; gap: 22px; color: var(--muted); }
 
+        /* Hero-osio */
         .hero {
             position: relative;
             max-width: 1180px;
@@ -76,7 +78,7 @@
 
         .hero-mark {
             position: absolute;
-            right: -5%;
+            right: -2%;
             bottom: -20px;
             z-index: 0;
             color: rgba(17, 17, 17, 0.04);
@@ -99,7 +101,12 @@
 
         h1, h2 { margin: 0; font-weight: 700; text-transform: uppercase; line-height: 0.95; }
         h1 { font-size: clamp(42px, 8vw, 96px); letter-spacing: -0.05em; margin-bottom: 24px; }
-        h2 { font-size: clamp(32px, 5vw, 64px); letter-spacing: -0.04em; margin-bottom: 40px; }
+        
+        h2 { 
+            font-size: clamp(32px, 5vw, 64px); 
+            letter-spacing: -0.04em; 
+            margin-bottom: 16px; /* Pienennetty väli tekstin ja otsikon välillä */
+        }
 
         .intro {
             max-width: 620px;
@@ -108,9 +115,10 @@
             line-height: 1.4;
         }
 
+        /* Sisältöalue */
         .content {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 80px;
             max-width: 1180px;
             margin: 0 auto;
@@ -146,15 +154,17 @@
         }
 
         .manifest { max-width: 760px; }
+        
         .manifest p {
             font-size: clamp(18px, 2.2vw, 28px);
-            line-height: 1.4;
-            margin-bottom: 1.5em;
+            line-height: 1.35;
+            margin: 0 0 1.2em 0;
             letter-spacing: -0.02em;
         }
 
+        /* Kollektiivi-lista */
         .collective {
-            margin-top: 100px;
+            margin-top: 80px;
             padding-top: 40px;
             border-top: 1px solid var(--line);
         }
@@ -163,11 +173,11 @@
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 24px;
+            margin: 0 0 20px 0;
         }
 
         .names {
-            font-size: clamp(24px, 4vw, 48px);
+            font-size: clamp(24px, 4vw, 46px);
             font-weight: 700;
             line-height: 1.1;
             text-transform: uppercase;
@@ -185,16 +195,17 @@
             justify-content: space-between;
         }
 
+        /* Mobiiliasetukset */
         @media (max-width: 900px) {
             .content { grid-template-columns: 1fr; gap: 40px; }
             .meta { position: static; }
-            .hero-mark { opacity: 0.4; bottom: 0; }
+            .hero-mark { opacity: 0.4; }
         }
 
         @media (max-width: 600px) {
             .page { padding: 20px; }
             .site-header { margin-bottom: 40px; }
-            .nav { display: none; } /* Piilotetaan mobiilissa tai voit lisätä hampurilaisvalikon */
+            .nav { display: none; }
         }
     </style>
 </head>
@@ -202,7 +213,7 @@
 
     <div class="page">
         <header class="site-header">
-            <a class="brand" href="#">
+            <a class="brand" href="#alku">
                 <span class="brand-mark">Å</span>
                 <span>Å-Kollektiivi</span>
             </a>
@@ -214,6 +225,7 @@
         </header>
 
         <main>
+            <!-- Hero -->
             <section class="hero" id="alku">
                 <div class="hero-copy">
                     <p class="eyebrow">Valokuvataiteilijoiden yhteenliittymä</p>
@@ -226,10 +238,11 @@
                 <div class="hero-mark" aria-hidden="true">Å</div>
             </section>
 
+            <!-- Sisältö -->
             <div class="content">
                 <aside class="meta">
                     <div class="meta-block">
-                        <span class="meta-title">Julkaistu</span>
+                        <span class="meta-title">Teksti</span>
                         Otso Kähönen<br>
                         8. maaliskuuta 2026
                     </div>
@@ -255,9 +268,9 @@
                     </p>
 
                     <section class="collective" id="kollektiivi">
-                        <h3>Jäsenet</h3>
+                        <h3>Kollektiivi</h3>
                         <div class="names">
-                            Anna K Greus / Jani Frisk / Otso Kähönen / Peksi / Jussi Ronkainen / Riikka Ruotsalainen
+                            Anna K Greus – Jani Frisk – Otso Kähönen – Peksi – Jussi Ronkainen – Riikka Ruotsalainen
                         </div>
                     </section>
                 </article>
@@ -266,7 +279,7 @@
 
         <footer class="site-footer">
             <span>© 2026 Å-Kollektiivi</span>
-            <a href="#alku">Takaisin ylös ↑</a>
+            <a href="#alku">Alkuun ↑</a>
         </footer>
     </div>
 
