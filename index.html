@@ -1,377 +1,535 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Å-Kollektiivi on valokuvataiteilijoiden yhteenliittymä ilman hierarkiaa.">
-  <title>Å-Kollektiivi</title>
-  <style>
-    :root {
-      --bg: #fff;
-      --ink: #111;
-      --muted: #6d665c;
-      --line: rgba(17, 17, 17, 0.18);
-      --panel: rgba(255, 255, 255, 0.84);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oppiaineen Arviointi</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(96,165,250,0.35), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(168,85,247,0.30), transparent 30%),
+    linear-gradient(135deg, #dbeafe, #eef2ff, #f5f3ff);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  animation: fadeIn 0.8s ease;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+.container {
+  max-width: 980px;
+  margin: auto;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 40px;
+  border-radius: 32px;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.12),
+    inset 0 1px 1px rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.45);
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
+h1, h2 {
+  text-align: center;
+  color: #0f172a;
+}
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-    }
+h1 {
+  font-size: 52px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+h2 {
+  font-size: 30px;
+}
 
-    a:hover {
-      text-decoration: underline;
-      text-underline-offset: 0.25em;
-    }
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 30px;
+}
 
-    .page {
-      min-height: 100vh;
-      padding: 28px;
-    }
+button {
+  padding: 18px;
+  border: none;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow:
+    0 10px 20px rgba(37,99,235,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.3);
+  position: relative;
+  overflow: hidden;
+}
 
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      max-width: 1180px;
-      margin: 0 auto 92px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 13px;
-    }
+button:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow:
+    0 18px 30px rgba(37,99,235,0.35),
+    0 0 20px rgba(124,58,237,0.2);
+}
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 700;
-    }
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: 0.5s;
+}
 
-    .brand-mark {
-      display: inline-grid;
-      width: 52px;
-      height: 52px;
-      place-items: center;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.08em;
-      line-height: 1;
-    }
+button:hover::before {
+  left: 120%;
+}
 
-    .brand img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-    }
+.criteria-box {
+  margin-top: 30px;
+}
 
-    .nav {
-      display: flex;
-      gap: 22px;
-      color: var(--muted);
-    }
+.criteria {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 24px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.05),
+    inset 0 1px 1px rgba(255,255,255,0.4);
+  transition: 0.25s ease;
+}
 
-    .hero {
-      position: relative;
-      display: block;
-      max-width: 1180px;
-      margin: 0 auto 96px;
-      padding: 72px 0 54px;
-    }
+.criteria:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(0,0,0,0.08);
+}
 
-    .hero-mark {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-      color: rgba(0, 0, 0, 0.08);
-      pointer-events: none;
-    }
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  margin-top: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background: white;
+}
 
-    .hero-letter {
-      display: block;
-      font-size: clamp(220px, 34vw, 430px);
-      font-weight: 700;
-      letter-spacing: -0.14em;
-      line-height: 0.78;
-      text-transform: uppercase;
-    }
+.result {
+  margin-top: 35px;
+  background: linear-gradient(135deg, rgba(219,234,254,0.9), rgba(237,233,254,0.9));
+  padding: 32px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.08),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.5);
+}
 
-    .hero-copy {
-      position: relative;
-      z-index: 1;
-    }
+.average {
+  font-size: 64px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 8px 18px rgba(37,99,235,0.2);
+}
 
-    .eyebrow {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 14px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
+.back {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  margin-bottom: 20px;
+}
 
-    h1,
-    h2 {
-      margin: 0;
-      font-weight: 700;
-      line-height: 0.95;
-      text-transform: uppercase;
-    }
+.subjects button {
+  min-height: 85px;
+  line-height: 1.4;
+}
 
-    h1 {
-      max-width: none;
-      font-size: clamp(48px, 6.7vw, 96px);
-      letter-spacing: -0.065em;
-      white-space: nowrap;
-    }
+small {
+  color: #475569;
+  font-size: 13px;
+}
 
-    h2 {
-      font-size: clamp(32px, 5vw, 72px);
-      letter-spacing: -0.05em;
-      margin-bottom: 60px;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 
-    .intro {
-      max-width: 620px;
-      margin-top: 28px;
-      color: var(--muted);
-      font-size: clamp(18px, 2.2vw, 25px);
-      line-height: 1.35;
-    }
-
-    .content {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
-      gap: clamp(28px, 6vw, 86px);
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 56px 0 86px;
-      border-top: 1px solid var(--line);
-    }
-
-    .meta {
-      position: sticky;
-      top: 28px;
-      align-self: start;
-      display: grid;
-      gap: 26px;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .meta-block {
-      padding: 20px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      backdrop-filter: blur(14px);
-    }
-
-    .meta-title {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .manifest {
-      max-width: 700px;
-    }
-
-    .manifest p {
-      margin: 0 0 1.5em;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    .collective {
-      margin-top: 56px;
-      padding-top: 30px;
-      border-top: 1px solid var(--line);
-    }
-
-    .collective h3 {
-      margin: 0 0 14px;
-      font-size: 16px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .names {
-      margin: 0;
-      font-size: clamp(22px, 3vw, 42px);
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-    }
-
-    .site-footer {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 28px 0 10px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    @media (max-width: 760px) {
-      .page {
-        padding: 18px;
-      }
-
-      .site-header,
-      .nav {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .site-header {
-        gap: 18px;
-        margin-bottom: 64px;
-      }
-
-      .nav {
-        gap: 10px;
-      }
-
-      .content {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        margin-bottom: 64px;
-        padding: 24px 0 48px;
-      }
-
-      .hero-mark {
-        right: -26px;
-        bottom: 24px;
-      }
-
-      .hero-letter {
-        font-size: clamp(180px, 72vw, 310px);
-      }
-
-      h1 {
-        white-space: normal;
-      }
-
-      .meta {
-        position: static;
-      }
-    }
-  </style>
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
 </head>
 <body>
-  <div class="page">
-    <header class="site-header" aria-label="Sivuston yläosa">
-      <a class="brand" href="#alku" aria-label="Å-Kollektiivi etusivu">
-        <span class="brand-mark" aria-hidden="true">Å</span>
-        <span>Å-Kollektiivi</span>
-      </a>
-      <nav class="nav" aria-label="Päävalikko">
-        <a href="#manifesti">Manifesti</a>
-        <a href="#kollektiivi">Kollektiivi</a>
-        <a href="#yhteys">Yhteys</a>
-      </nav>
-    </header>
 
-    <main id="alku">
-      <section class="hero" aria-labelledby="sivun-otsikko">
-        <div class="hero-copy">
-          <p class="eyebrow">Valokuvataiteilijoiden yhteenliittymä</p>
-          <h1 id="sivun-otsikko">Å-Kollektiivi – Manifesti</h1>
-          <p class="intro">
-            Å-Kollektiivi on valokuvataiteilijoiden yhteenliittymä ilman hierarkiaa.
-            Teemme taidetta itsenäisesti, yhdessä ja rinnakkain.
-          </p>
-        </div>
-        <div class="hero-mark" aria-hidden="true">
-          <span class="hero-letter">Å</span>
-        </div>
-      </section>
+<div class="container">
+  <div id="homeView">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:15px;">
+  <button onclick="toggleMaterials()" style="max-width:260px;">📚 Opetusmateriaali</button>
+</div>
 
-      <section class="content" id="manifesti" aria-labelledby="manifesti-otsikko">
-        <aside class="meta">
-          <div class="meta-block">
-            <span class="meta-title">Teksti</span>
-            kirjoittanut Otso Kähönen<br>
-            8.3.2026
-          </div>
-          <div class="meta-block" id="yhteys">
-            <span class="meta-title">Yhteys</span>
-            <a href="mailto:info@a-kollektiivi.fi">info@a-kollektiivi.fi</a><br>
-            <a href="https://www.xn---kollektiivi-15a.fi">www.å-kollektiivi.fi</a>
-          </div>
-          <div class="meta-block">
-            <span class="meta-title">Some</span>
-            <a href="#" aria-label="Å-Kollektiivi Instagram">Instagram</a>
-          </div>
-        </aside>
+<h1>Valitse oppiaine</h1>
 
-        <article class="manifest">
-          <h2 id="manifesti-otsikko">Å-Kollektiivi</h2>
-          <p>
-            Å-kirjain ei juuri esiinny suomen kielessä.
-            Sitä tavataan lähinnä paikannimissä, erisnimissä ja harvinaisissa lainasanoissa.
-            29 aakkosemme joukossa å on todellinen poikkeus.
-            Marginaalinen. Omaperäinen. Kätketty aarre.
-          </p>
-          <p>
-            Å-kirjain kollektiivin nimessä edustaa tätä kaikkea.
-            Se mahdollistaa tekemisellemme lähes minkä tahansa merkityksen.
-            Å-Kollektiivi on valokuvataiteilijoiden yhteenliittymä ilman hierarkiaa.
-          </p>
-          <p>
-            Lähestymme taidetta vapaasti – kulloistenkin ideoiden, ajatusten,
-            halujen ja intuition johdattelemana. Teemme taidetta itsenäisesti,
-            yhdessä ja rinnakkain.
-          </p>
-          <p>
-            Työskentelytapamme perustuu avoimuuteen.
-            Kannustamme toisiamme. Kokeilemme. Leikimme taiteella ja sen käsitteillä.
-            Å-kollektiiviin mahtuu laaja kirjo tekemistä. Ilman rajoituksia. Ilman odotuksia.
-          </p>
-          <p>
-            Nousemme taiteen homogeenisyyttä vastaan ja annamme oman näkemyksemme
-            näkyä ja kuulua rohkeasti.
-          </p>
+    <div class="subjects">
+      <button onclick="openSubject('Äidinkieli ja kirjallisuus')">Äidinkieli <span id="grade-Äidinkieli ja kirjallisuus">(8.00)</span></button>
+      <button onclick="openSubject('Matematiikka')">Matematiikka <span id="grade-Matematiikka">(8.00)</span></button>
+      <button onclick="openSubject('Englanti')">Englanti <span id="grade-Englanti">(8.00)</span></button>
+      <button onclick="openSubject('Ympäristöoppi')">Ympäristöoppi <span id="grade-Ympäristöoppi">(8.00)</span></button>
+      <button onclick="openSubject('Ruotsi')">Ruotsi <span id="grade-Ruotsi">(8.00)</span></button>
+      <button onclick="openSubject('Espanja')">Espanja <span id="grade-Espanja">(8.00)</span></button>
+      <button onclick="openSubject('Musiikki')">Musiikki <span id="grade-Musiikki">(8.00)</span></button>
+      <button onclick="openSubject('Käsityö')">Käsityö <span id="grade-Käsityö">(8.00)</span></button>
+      <button onclick="openSubject('Kuvataide')">Kuvataide <span id="grade-Kuvataide">(8.00)</span></button>
+    </div>
 
-          <section class="collective" id="kollektiivi" aria-labelledby="kollektiivi-otsikko">
-            <h3 id="kollektiivi-otsikko">Å-kollektiivi</h3>
-            <p class="names">
-              Anna K Greus - Jani Frisk - Otso Kähönen<br>
-              Peksi - Jussi Ronkainen - Riikka Ruotsalainen
-            </p>
-          </section>
-        </article>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <span>© 2026 Å-Kollektiivi</span>
-    </footer>
+    <div class="result" style="margin-top:35px;">
+      <h2>6. luokan keskiarvo</h2>
+      <div class="average" id="finalAverage">8.00</div>
+      <h3>Pyöristetty keskiarvo</h3>
+      <div class="average" id="finalRounded" style="font-size:35px;">8</div>
+      <button onclick="resetAll()" style="margin-top:20px;background:#c62828;">Tyhjennä kaikki tiedot</button>
+    </div>
   </div>
+
+  <div id="materialsView" style="display:none; margin-bottom:30px;">
+  <div class="result">
+    <h2>Opetusmateriaali</h2>
+    <div style="text-align:left; max-height:500px; overflow:auto; padding:10px; line-height:1.7;">
+      <h3>Äidinkieli ja kirjallisuus</h3>
+      <p>Arvosana 9: Oppilas lukee sujuvasti vaativia tekstejä, erittelee tekstilajeja ja käyttää monipuolisia ymmärtämisen strategioita. Kirjoittaminen on lähes virheetöntä ja vuorovaikutus aktiivista.</p>
+      <p>Arvosana 8: Oppilas ymmärtää lukemansa pääasiat, kirjoittaa selkeitä tekstejä ja toimii rakentavasti keskusteluissa.</p>
+
+      <h3>Matematiikka</h3>
+      <p>Arvosana 9: Oppilas hallitsee murtoluvut, prosentit, ongelmanratkaisun ja geometrian erittäin sujuvasti.</p>
+      <p>Arvosana 8: Oppilas osaa peruslaskutoimitukset, prosentit ja tavalliset geometrian tehtävät.</p>
+
+      <h3>Englanti</h3>
+      <p>Arvosana 9: Oppilas viestii monipuolisesti ja ymmärtää puhetta ja tekstejä hyvin.</p>
+      <p>Arvosana 8: Oppilas pystyy viestimään tutuissa tilanteissa ja kirjoittamaan peruslauseita.</p>
+
+      <h3>Ympäristöoppi</h3>
+      <p>Arvosana 9: Oppilas ymmärtää luonnontieteiden käsitteitä syvällisesti ja tekee itsenäisiä johtopäätöksiä.</p>
+      <p>Arvosana 8: Oppilas tunnistaa keskeiset käsitteet ja osaa käyttää karttoja sekä tehdä havaintoja.</p>
+
+      <p style="margin-top:20px;">
+        Arvosana 10 muodostuu silloin, kun oppilas ylittää arvosanan 9 tavoitteet selvästi ja osoittaa poikkeuksellista osaamista, itsenäisyyttä ja soveltamiskykyä.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="subjectView" style="display:none;">
+    <button class="back" onclick="goBack()">← Takaisin</button>
+
+    <h2 id="subjectTitle"></h2>
+
+    <div class="criteria-box" id="criteriaBox"></div>
+
+    <div class="result">
+      <h3>Aineen keskiarvo</h3>
+      <div class="average" id="average">8.00</div>
+      <h3>Pyöristetty numero</h3>
+      <div class="average" id="roundedAverage" style="font-size:35px;">8</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const savedGrades = JSON.parse(localStorage.getItem('savedGrades') || '{}');
+const subjectCriteria = {
+  'Äidinkieli ja kirjallisuus': {
+    testsWeight: 60,
+    criteria: [
+      { name: 'Lukemisen sujuvuus', weight: 8 },
+      { name: 'Tekstin ymmärtäminen', weight: 10 },
+      { name: 'Kirjoittamisen rakenne', weight: 10 },
+      { name: 'Oikeinkirjoitus', weight: 10 },
+      { name: 'Tekstin loogisuus', weight: 8 },
+      { name: 'Vuorovaikutustaidot', weight: 7 },
+      { name: 'Keskusteluun osallistuminen', weight: 7 }
+    ]
+  },
+
+  'Matematiikka': {
+    testsWeight: 70,
+    criteria: [
+      { name: 'Keskittyminen tunnilla', weight: 5 },
+      { name: 'Viittaaminen ja osallistuminen', weight: 5 },
+      { name: 'Kotitehtävien tekeminen', weight: 5 },
+      { name: 'Tuntityöskentely', weight: 5 },
+      { name: 'Huolellisuus', weight: 5 },
+      { name: 'Itsenäinen työskentely', weight: 3 },
+      { name: 'Parityöskentely', weight: 2 }
+    ]
+  },
+
+  'Englanti': {
+    testsWeight: 65,
+    criteria: [
+      { name: 'Puheen ymmärtäminen', weight: 7 },
+      { name: 'Tekstin ymmärtäminen', weight: 8 },
+      { name: 'Ääntäminen', weight: 7 },
+      { name: 'Viestintätaidot', weight: 8 },
+      { name: 'Aloitteellisuus keskusteluissa', weight: 5 }
+    ]
+  },
+
+  'Ympäristöoppi': {
+    testsWeight: 65,
+    criteria: [
+      { name: 'Karttojen käyttö', weight: 6 },
+      { name: 'Luonnontieteelliset kokeet', weight: 8 },
+      { name: 'Havaintojen kirjaaminen', weight: 7 },
+      { name: 'Johtopäätösten tekeminen', weight: 7 },
+      { name: 'Turvallinen työskentely', weight: 4 },
+      { name: 'Keskittyminen tunnilla', weight: 3 }
+    ]
+  },
+
+  'Ruotsi': {
+    testsWeight: 65,
+    criteria: [
+      { name: 'Ääntäminen', weight: 8 },
+      { name: 'Puheen ymmärtäminen', weight: 8 },
+      { name: 'Rohkeus puhua ruotsia', weight: 6 },
+      { name: 'Tuntityöskentely', weight: 5 },
+      { name: 'Kotitehtävien tekeminen', weight: 4 },
+      { name: 'Keskittyminen tunnilla', weight: 4 }
+    ]
+  },
+
+  'Espanja': {
+    testsWeight: 65,
+    criteria: [
+      { name: 'Ääntäminen', weight: 8 },
+      { name: 'Sanaston käyttäminen puheessa', weight: 7 },
+      { name: 'Kuullun ymmärtäminen', weight: 8 },
+      { name: 'Viestintätaidot', weight: 6 },
+      { name: 'Aktiivisuus tunnilla', weight: 3 },
+      { name: 'Kotitehtävien tekeminen', weight: 3 }
+    ]
+  },
+
+  'Musiikki': {
+    testsWeight: 40,
+    criteria: [
+      { name: 'Laulaminen', weight: 15 },
+      { name: 'Rytmissä pysyminen', weight: 10 },
+      { name: 'Soittimien käyttö', weight: 10 },
+      { name: 'Yhteissoitto', weight: 10 },
+      { name: 'Aktiivinen osallistuminen', weight: 8 },
+      { name: 'Keskittyminen tunnilla', weight: 7 }
+    ]
+  },
+
+  'Käsityö': {
+    testsWeight: 35,
+    criteria: [
+      { name: 'Työvälineiden käyttö', weight: 12 },
+      { name: 'Huolellisuus', weight: 12 },
+      { name: 'Ohjeiden seuraaminen', weight: 10 },
+      { name: 'Luovuus', weight: 10 },
+      { name: 'Työn viimeistely', weight: 11 },
+      { name: 'Itsenäinen työskentely', weight: 10 }
+    ]
+  },
+
+  'Kuvataide': {
+    testsWeight: 35,
+    criteria: [
+      { name: 'Piirtäminen', weight: 12 },
+      { name: 'Värien käyttö', weight: 10 },
+      { name: 'Luovuus', weight: 12 },
+      { name: 'Työn suunnittelu', weight: 8 },
+      { name: 'Huolellisuus', weight: 10 },
+      { name: 'Aktiivinen työskentely', weight: 13 }
+    ]
+  }
+};
+
+function openSubject(subject) {
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('subjectView').style.display = 'block';
+
+  document.getElementById('subjectTitle').innerText = subject;
+
+  const box = document.getElementById('criteriaBox');
+  box.innerHTML = '';
+
+  const info = subjectCriteria[subject];
+
+  box.innerHTML += `
+    <div class="criteria">
+      <strong>Kokeiden keskiarvo (${info.testsWeight}% vaikutus)</strong>
+      <select onchange="calculateAverage()" class="testGrade">
+        <option value="10">10</option>
+        <option value="9.75">10-</option>
+        <option value="9.5">9½</option>
+        <option value="9.25">9+</option>
+        <option value="9">9</option>
+        <option value="8.75">9-</option>
+        <option value="8.5">8½</option>
+        <option value="8.25">8+</option>
+        <option value="8" selected>8</option>
+        <option value="7.75">8-</option>
+        <option value="7.5">7½</option>
+        <option value="7.25">7+</option>
+        <option value="7">7</option>
+        <option value="6.75">7-</option>
+        <option value="6.5">6½</option>
+        <option value="6.25">6+</option>
+        <option value="6">6</option>
+      </select>
+    </div>
+  `;
+
+  info.criteria.forEach((item, index) => {
+    box.innerHTML += `
+      <div class="criteria">
+        <strong>${index + 1}. ${item.name}</strong><br>
+        <small>Vaikutus ${item.weight}%</small>
+
+        <select onchange="calculateAverage()" class="gradeSelect" data-weight="${item.weight}">
+          <option value="10">10</option>
+          <option value="9.75">10-</option>
+          <option value="9.5">9½</option>
+          <option value="9.25">9+</option>
+          <option value="9">9</option>
+          <option value="8.75">9-</option>
+          <option value="8.5">8½</option>
+          <option value="8.25">8+</option>
+          <option value="8" selected>8</option>
+          <option value="7.75">8-</option>
+          <option value="7.5">7½</option>
+          <option value="7.25">7+</option>
+          <option value="7">7</option>
+          <option value="6.75">7-</option>
+          <option value="6.5">6½</option>
+          <option value="6.25">6+</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+    `;
+  });
+
+  calculateAverage();
+}
+
+function calculateAverage() {
+  const subject = document.getElementById('subjectTitle').innerText;
+  const info = subjectCriteria[subject];
+
+  const testGrade = Number(document.querySelector('.testGrade').value);
+
+  let totalPoints = testGrade * info.testsWeight;
+  let totalWeight = info.testsWeight;
+
+  const selects = document.querySelectorAll('.gradeSelect');
+
+  selects.forEach(select => {
+    const grade = Number(select.value);
+    const weight = Number(select.dataset.weight);
+
+    totalPoints += grade * weight;
+    totalWeight += weight;
+  });
+
+  let average = totalPoints / totalWeight;
+
+  if (average > 10) {
+    average = 10;
+  }
+
+  if (average < 4) {
+    average = 4;
+  }
+
+  average = average.toFixed(2);
+
+  document.getElementById('average').innerText = average;
+
+  document.getElementById('roundedAverage').innerText = Math.round(average);
+
+  savedGrades[subject] = Number(average);
+  localStorage.setItem('savedGrades', JSON.stringify(savedGrades));
+
+  const gradeElement = document.getElementById(`grade-${subject}`);
+  if (gradeElement) {
+    gradeElement.innerText = `(${average})`;
+  }
+
+  updateFinalAverage();
+}
+
+function updateFinalAverage() {
+  const values = Object.values(savedGrades);
+
+  if (values.length === 0) {
+    document.getElementById('finalAverage').innerText = '0.00';
+    document.getElementById('finalRounded').innerText = '0';
+    return;
+  }
+
+  let total = 0;
+
+  values.forEach(v => {
+    total += Number(v);
+  });
+
+  const avg = (total / values.length).toFixed(2);
+
+  document.getElementById('finalAverage').innerText = avg;
+  document.getElementById('finalRounded').innerText = Math.round(avg);
+}
+
+function resetAll() {
+  localStorage.removeItem('savedGrades');
+  location.reload();
+}
+
+window.onload = () => {
+  Object.keys(savedGrades).forEach(subject => {
+    const element = document.getElementById(`grade-${subject}`);
+    if (element) {
+      element.innerText = `(${savedGrades[subject]})`;
+    }
+  });
+
+  updateFinalAverage();
+};
+
+function toggleMaterials() {
+  const view = document.getElementById('materialsView');
+
+  if (view.style.display === 'none') {
+    view.style.display = 'block';
+    view.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    view.style.display = 'none';
+  }
+}
+
+function goBack() {
+  document.getElementById('homeView').style.display = 'block';
+  document.getElementById('subjectView').style.display = 'none';
+}
+</script>
+
 </body>
 </html>
